@@ -1,7 +1,7 @@
 # Личный проект «Кекстаграм» [![Build status][travis-image]][travis-url]
 
 * Студент: [Сергей Пичугин](https://up.htmlacademy.ru/javascript/14/user/584047).
-* Наставник: `Неизвестно`.
+* Наставник: [Константин Мамаев](https://up.htmlacademy.ru/javascript/14/user/210773).
 
 ---
 
