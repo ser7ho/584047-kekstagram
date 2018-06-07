@@ -19,9 +19,11 @@ var DESCRIPTIONS = [
 var PICTURES_COUNT = 25;
 var LIKES_COUNT = [15, 250];
 var COMMENT_COUNT = [1, 2];
+var SVG_COUNT = [1, 6];
+
+var pictures = [];
 
 var generatePictures = function (likes, comments, commentCount, descriptions, count) {
-  var pictures = [];
   for (var i = 0; i < count; i++) {
     pictures[i] = {
       url: generateUrl(i + 1),
@@ -65,10 +67,9 @@ var makePicture = function (picture) {
   pictureClone.querySelector('.picture__stat--comments').textContent = picture.comments.length + '';
   return pictureClone;
 };
-
+var fragment = document.createDocumentFragment();
 var appendPictures = function (arr) {
   var similarPictures = document.querySelector('.pictures');
-  var fragment = document.createDocumentFragment();
   for (var i = 0; i < arr.length; i++) {
     fragment.appendChild(makePicture(arr[i]));
   }
@@ -76,3 +77,31 @@ var appendPictures = function (arr) {
 };
 
 appendPictures(generatePictures(LIKES_COUNT, COMMENTS, COMMENT_COUNT, DESCRIPTIONS, PICTURES_COUNT));
+
+var similarCommentTemplate = document.querySelector('#picture').content.querySelector('.social__comment');
+
+var makeComment = function (comment, svgCount) {
+  var commentClone = similarCommentTemplate.cloneNode(true);
+
+  commentClone.querySelector('.social__comment > img').src = 'img/avatar-' + randomInteger(svgCount[0], svgCount[1]) + '.svg';
+  commentClone.querySelector('.social__text').textContent = comment;
+  return commentClone;
+};
+
+var showBigPicture = function (arr) {
+  var bigPicture = document.querySelector('.big-picture');
+  bigPicture.classList.remove('hidden');
+  var similarComment = document.querySelector('.social__comments');
+  for (var i = 0; i < arr.length; i++) {
+    fragment.appendChild(makeComment(arr[i], SVG_COUNT));
+  }
+  similarComment.appendChild(fragment);
+  bigPicture.querySelector('.big-picture__img > img').src = pictures[0].url;
+  bigPicture.querySelector('.likes-count').textContent = pictures[0].likes;
+  bigPicture.querySelector('.comments-count').textContent = pictures[0].comments.length + '';
+  bigPicture.querySelector('.social__caption').textContent = pictures[0].description;
+  document.querySelector('.social__comment-count').classList.add('visually-hidden');
+  document.querySelector('.social__comment-loadmore').classList.add('visually-hidden');
+};
+
+showBigPicture(pictures[0].comments);
