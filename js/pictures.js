@@ -132,6 +132,9 @@ var onImgUploadEscPress = function (evt) {
 };
 
 var openImgUpload = function () {
+  pin.style.left = '100%';
+  valueResize.value = '100%';
+  resizeScale();
   imgUploadOverlay.classList.remove('hidden');
   document.addEventListener('keydown', onImgUploadEscPress);
   effectsList.addEventListener('click', onEffectsClick);
@@ -227,7 +230,6 @@ var valueResize = imgResize.querySelector('.resize__control--value');
 var STEP = 25;
 var SIZE_MAX = 100;
 var SIZE_MIN = 25;
-valueResize.value = '100%';
 
 var resizeScale = function () {
   imgUploadPreview.style.transform = 'scale(' + parseInt(valueResize.value, 10) / 100 + ')';
