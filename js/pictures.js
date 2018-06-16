@@ -176,8 +176,9 @@ var onEffectsClick = function (evt) {
 
 // --- slider ----------------------------------------------------------------------------------------------------------
 
-var onPinMouseup = function () {
-  setEffectLevel(30);
+var onPinMouseup = function (evt) {
+  var BAR = 453;
+  setEffectLevel(evt.target.offsetLeft / BAR * 100);
 };
 
 var setEffectLevel = function (pinLevel) {
