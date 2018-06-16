@@ -135,6 +135,8 @@ var openImgUpload = function () {
   imgUploadOverlay.classList.remove('hidden');
   document.addEventListener('keydown', onImgUploadEscPress);
   effectsList.addEventListener('click', onEffectsClick);
+  minusResize.addEventListener('click', onMinusResizeClick);
+  plusResize.addEventListener('click', onPlusResizeClick);
 };
 
 var closeImgUpload = function () {
@@ -143,6 +145,8 @@ var closeImgUpload = function () {
   effectsList.removeEventListener('click', onEffectsClick);
   imgUploadPreview.classList.remove(imgUploadPreview.classList[1]);
   pin.removeEventListener('mouseup', onPinMouseup);
+  minusResize.removeEventListener('click', onMinusResizeClick);
+  plusResize.removeEventListener('click', onPlusResizeClick);
 };
 
 imgUpload.addEventListener('change', function () {
@@ -209,6 +213,44 @@ var setFilter = function (filterName, level) {
 
 var scaleLevel = function (filterLevel, percent) {
   return filterLevel / 100 * percent;
+};
+
+// ---------------------------------------------------------------------------------------------------------------------
+
+// --- resize ----------------------------------------------------------------------------------------------------------
+
+var imgResize = document.querySelector('.img-upload__resize');
+var plusResize = imgResize.querySelector('.resize__control--plus');
+var minusResize = imgResize.querySelector('.resize__control--minus');
+var valueResize = imgResize.querySelector('.resize__control--value');
+
+var STEP = 25;
+var SIZE_MAX = 100;
+var SIZE_MIN = 25;
+valueResize.value = '100%';
+
+var resizeScale = function () {
+  imgUploadPreview.style.transform = 'scale(' + parseInt(valueResize.value, 10) / 100 + ')';
+};
+
+var setValueResize = function (isPlus) {
+  if (isPlus) {
+    if (parseInt(valueResize.value, 10) < SIZE_MAX) {
+      valueResize.value = parseInt(valueResize.value, 10) + STEP + '%';
+    }
+  } else if (parseInt(valueResize.value, 10) > SIZE_MIN) {
+    valueResize.value = parseInt(valueResize.value, 10) - STEP + '%';
+  }
+};
+
+var onMinusResizeClick = function () {
+  setValueResize(false);
+  resizeScale();
+};
+
+var onPlusResizeClick = function () {
+  setValueResize(true);
+  resizeScale();
 };
 
 // ---------------------------------------------------------------------------------------------------------------------
