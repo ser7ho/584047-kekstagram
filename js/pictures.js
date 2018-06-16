@@ -166,11 +166,10 @@ cancelUpload.addEventListener('click', function () {
 
 var onEffectsClick = function (evt) {
   pin.addEventListener('mouseup', onPinMouseup);
-  pin.style.left = '100%';
-
-  if (evt.target.classList[0] === 'effects__preview') {
+  if (evt.target.classList.contains('effects__preview')) {
     imgUploadPreview.classList.remove(imgUploadPreview.classList[1]);
     imgUploadPreview.classList.add(evt.target.classList[1]);
+    imgUploadPreview.style.filter = '';
   }
 };
 // ---------------------------------------------------------------------------------------------------------------------
