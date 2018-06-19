@@ -390,3 +390,19 @@ var onPlusResizeClick = function () {
 })();
 
 // ---------------------------------------------------------------------------------------------------------------------
+
+// comments ------------------------------------------------------------------------------------------------------------
+(function () {
+  var MAX_LENGTH = 140;
+  var inputComment = document.querySelector('.text__description');
+  var textCount = document.querySelector('.text__count');
+
+  var checkComment = function () {
+    textCount.textContent = 'Осталось символов ' + (MAX_LENGTH - inputComment.value.length);
+  };
+
+  inputComment.addEventListener('keyup', function () {
+    checkComment();
+  });
+})();
+// ---------------------------------------------------------------------------------------------------------------------
