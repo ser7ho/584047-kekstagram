@@ -123,6 +123,10 @@ var cancelUpload = pictureItems.querySelector('.img-upload__cancel');
 var pin = imgUploadOverlay.querySelector('.scale__pin');
 var effectsList = document.querySelector('.effects__list');
 var imgUploadPreview = imgUploadOverlay.querySelector('.img-upload__preview');
+var textCount = document.querySelector('.text__count');
+var inputComment = document.querySelector('.text__description');
+var requirementElements = document.querySelectorAll('.text__hashtags + .text__requirements li');
+var inputHashtags = document.querySelector('.text__hashtags');
 
 var onImgUploadEscPress = function (evt) {
   var ESC_KEYCODE = 27;
@@ -150,6 +154,12 @@ var closeImgUpload = function () {
   pin.removeEventListener('mouseup', onPinMouseup);
   minusResize.removeEventListener('click', onMinusResizeClick);
   plusResize.removeEventListener('click', onPlusResizeClick);
+  textCount.textContent = 'Осталось символов: 140';
+  inputComment.value = '';
+  for (var i = 0; i < requirementElements.length; i++) {
+    requirementElements[i].classList = 'valid';
+  }
+  inputHashtags.setCustomValidity('');
 };
 
 imgUpload.addEventListener('change', function () {
@@ -378,7 +388,6 @@ var onPlusResizeClick = function () {
     }
   ];
 
-  var inputHashtags = document.querySelector('.text__hashtags');
 
   inputHashtags.addEventListener('keyup', function () {
     checkInput(inputHashtags);
@@ -394,11 +403,9 @@ var onPlusResizeClick = function () {
 // comments ------------------------------------------------------------------------------------------------------------
 (function () {
   var MAX_LENGTH = 140;
-  var inputComment = document.querySelector('.text__description');
-  var textCount = document.querySelector('.text__count');
 
   var checkComment = function () {
-    textCount.textContent = 'Осталось символов ' + (MAX_LENGTH - inputComment.value.length);
+    textCount.textContent = 'Осталось символов: ' + (MAX_LENGTH - inputComment.value.length);
   };
 
   inputComment.addEventListener('keyup', function () {
