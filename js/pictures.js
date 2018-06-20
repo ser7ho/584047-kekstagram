@@ -65,9 +65,9 @@ var makePicture = function (picture) {
 var appendPictures = function (items) {
   var fragmentPictures = document.createDocumentFragment();
   var similarPictures = document.querySelector('.pictures');
-  for (var i = 0; i < items.length; i++) {
-    fragmentPictures.appendChild(makePicture(items[i]));
-  }
+  items.forEach(function (el) {
+    fragmentPictures.appendChild(makePicture(el));
+  });
   similarPictures.appendChild(fragmentPictures);
 };
 
@@ -88,9 +88,9 @@ var showBigPicture = function (item) {
   var fragmentComments = document.createDocumentFragment();
   bigPicture.classList.remove('hidden');
   var similarComment = document.querySelector('.social__comments');
-  for (var i = 0; i < item.comments.length; i++) {
-    fragmentComments.appendChild(makeComment(item.comments[i], AVATAR_INDEX_RANGE));
-  }
+  item.comments.forEach(function (el) {
+    fragmentComments.appendChild(makeComment(el, AVATAR_INDEX_RANGE));
+  });
   similarComment.appendChild(fragmentComments);
   bigPicture.querySelector('.big-picture__img img').src = item.url;
   bigPicture.querySelector('.likes-count').textContent = item.likes;
@@ -123,7 +123,6 @@ var cancelUpload = pictureItems.querySelector('.img-upload__cancel');
 var pin = imgUploadOverlay.querySelector('.scale__pin');
 var effectsList = document.querySelector('.effects__list');
 var imgUploadPreview = imgUploadOverlay.querySelector('.img-upload__preview');
-var textCount = document.querySelector('.text__count');
 var inputComment = document.querySelector('.text__description');
 var requirementElements = document.querySelectorAll('.text__hashtags + .text__requirements li');
 var inputHashtags = document.querySelector('.text__hashtags');
@@ -154,11 +153,10 @@ var closeImgUpload = function () {
   pin.removeEventListener('mouseup', onPinMouseup);
   minusResize.removeEventListener('click', onMinusResizeClick);
   plusResize.removeEventListener('click', onPlusResizeClick);
-  textCount.textContent = 'Осталось символов: 140';
   inputComment.value = '';
-  for (var i = 0; i < requirementElements.length; i++) {
-    requirementElements[i].classList = 'valid';
-  }
+  requirementElements.forEach(function (el) {
+    el.classList = 'valid';
+  });
   inputHashtags.setCustomValidity('');
 };
 
@@ -270,8 +268,6 @@ var onPlusResizeClick = function () {
 // hashtags validity ------------------------------------------------------------------------------------------------------
 
 (function () {
-
-  var REGEXP = /[^\S]+/g;
   var invalidities = [];
 
   var addInvalidity = function (message) {
@@ -281,24 +277,25 @@ var onPlusResizeClick = function () {
     return invalidities.join('. \n');
   };
   var convertToArray = function (input) {
-    var arrayHashtags = input.value.split(REGEXP);
-    for (var i = 0; i < arrayHashtags.length; i++) {
-      if (arrayHashtags[i] === '') {
-        arrayHashtags.splice(i);
+    var hashtags = input.value.split(' ');
+    var arrayHashtags = [];
+    hashtags.forEach(function (el) {
+      if (el !== '') {
+        arrayHashtags.push(el);
       }
-    }
+    });
     return arrayHashtags;
   };
   var checkValidity = function (input) {
     invalidities.length = 0;
-    for (var i = 0; i < hashtagsValidityChecks.length; i++) {
 
-      var isInvalid = hashtagsValidityChecks[i].isInvalid(convertToArray(input));
+    hashtagsValidityChecks.forEach(function (el) {
+      var isInvalid = el.isInvalid(convertToArray(input));
       if (isInvalid) {
-        addInvalidity(hashtagsValidityChecks[i].invalidityMessage);
+        addInvalidity(el.invalidityMessage);
       }
 
-      var requirementElement = hashtagsValidityChecks[i].element;
+      var requirementElement = el.element;
       if (requirementElement) {
         if (isInvalid) {
           requirementElement.classList.add('invalid');
@@ -307,12 +304,11 @@ var onPlusResizeClick = function () {
           requirementElement.classList.remove('invalid');
           requirementElement.classList.add('valid');
         }
-
       }
-    }
+    });
   };
 
-  function checkInput(input) {
+  var checkInput = function (input) {
 
     checkValidity(input);
 
@@ -322,7 +318,7 @@ var onPlusResizeClick = function () {
       var message = getInvalidities();
       input.setCustomValidity(message);
     }
-  }
+  };
 
   var hashtagsValidityChecks = [
     {
@@ -393,23 +389,10 @@ var onPlusResizeClick = function () {
     checkInput(inputHashtags);
   });
   inputHashtags.addEventListener('change', function () {
-    inputHashtags.value = inputHashtags.value.split(REGEXP).join(' ');
+    inputHashtags.value = inputHashtags.value.split(/[^\S]+/g).join(' ');
   });
 
 })();
 
 // ---------------------------------------------------------------------------------------------------------------------
 
-// comments ------------------------------------------------------------------------------------------------------------
-(function () {
-  var MAX_LENGTH = 140;
-
-  var checkComment = function () {
-    textCount.textContent = 'Осталось символов: ' + (MAX_LENGTH - inputComment.value.length);
-  };
-
-  inputComment.addEventListener('keyup', function () {
-    checkComment();
-  });
-})();
-// ---------------------------------------------------------------------------------------------------------------------

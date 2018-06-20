@@ -857,16 +857,6 @@ main {
   transition: max-height 0.1s ease-out;
 }
 
-.text__count{
-  display: block;
-  text-align: center;
-  max-width: 500px;
-  margin: 5px auto;
-  overflow: hidden;
-  max-height: 0;
-  transition: max-height 0.1s ease-out;
-}
-
 .text__requirements li.invalid {
   color: #e74c3c;
 }
@@ -875,9 +865,7 @@ main {
 }
 
 .text__hashtags:focus + .text__requirements,
-.text__hashtags:active + .text__requirements,
-.text__description:focus + .text__count,
-.text__description:active + .text__count{
+.text__hashtags:active + .text__requirements{
   max-height: 1000px;
   transition: max-height 0.5s ease-in;
 }
