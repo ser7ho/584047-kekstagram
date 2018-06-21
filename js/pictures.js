@@ -288,9 +288,9 @@ var onPlusResizeClick = function () {
   };
   var checkValidity = function (input) {
     invalidities.length = 0;
-
+    var arrayHashtags = convertToArray(input);
     hashtagsValidityChecks.forEach(function (el) {
-      var isInvalid = el.isInvalid(convertToArray(input));
+      var isInvalid = el.isInvalid(arrayHashtags);
       if (isInvalid) {
         addInvalidity(el.invalidityMessage);
       }
@@ -309,9 +309,9 @@ var onPlusResizeClick = function () {
   };
 
   var checkInput = function (input) {
-
-    checkValidity(input);
-
+    if (input.length !== 0) {
+      checkValidity(input);
+    }
     if (invalidities.length === 0 && input.value === '') {
       input.setCustomValidity('');
     } else {
@@ -332,7 +332,7 @@ var onPlusResizeClick = function () {
       isInvalid: function (arrayHashtags) {
         for (var i = 0; i < arrayHashtags.length - 1; i++) {
           for (var j = i + 1; j < arrayHashtags.length; j++) {
-            if (arrayHashtags[i].toLowerCase() === arrayHashtags[j].toLowerCase() && arrayHashtags[i] !== '') {
+            if (arrayHashtags[i].toLowerCase() === arrayHashtags[j].toLowerCase()) {
               return true;
             }
           }
@@ -344,11 +344,9 @@ var onPlusResizeClick = function () {
     },
     {
       isInvalid: function (arrayHashtags) {
-        if (arrayHashtags.length !== 0) {
-          for (var i = 0; i < arrayHashtags.length; i++) {
-            if ((arrayHashtags[i].length < 2 && arrayHashtags[i] !== '') || arrayHashtags[i].length > 20) {
-              return true;
-            }
+        for (var i = 0; i < arrayHashtags.length; i++) {
+          if ((arrayHashtags[i].length < 2) || arrayHashtags[i].length > 20) {
+            return true;
           }
         }
         return false;
@@ -358,11 +356,9 @@ var onPlusResizeClick = function () {
     },
     {
       isInvalid: function (arrayHashtags) {
-        if (arrayHashtags.length !== 0) {
-          for (var i = 0; i < arrayHashtags.length; i++) {
-            if (arrayHashtags[i].charAt(0) !== '#' && arrayHashtags[i] !== '') {
-              return true;
-            }
+        for (var i = 0; i < arrayHashtags.length; i++) {
+          if (arrayHashtags[i].charAt(0) !== '#') {
+            return true;
           }
         }
         return false;
@@ -373,7 +369,7 @@ var onPlusResizeClick = function () {
     {
       isInvalid: function (arrayHashtags) {
         for (var i = 0; i < arrayHashtags.length; i++) {
-          if (~arrayHashtags[i].indexOf('#', 1) && arrayHashtags[i] !== '') {
+          if (~arrayHashtags[i].indexOf('#', 1)) {
             return true;
           }
         }
@@ -384,12 +380,8 @@ var onPlusResizeClick = function () {
     }
   ];
 
-
   inputHashtags.addEventListener('keyup', function () {
     checkInput(inputHashtags);
-  });
-  inputHashtags.addEventListener('change', function () {
-    inputHashtags.value = inputHashtags.value.split(/[^\S]+/g).join(' ');
   });
 
 })();
