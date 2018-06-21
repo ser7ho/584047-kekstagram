@@ -839,6 +839,37 @@ main {
   border-radius: 5px;
 }
 
+.text__hashtags:invalid {
+  border: 2px solid red;
+}
+
+.text__requirements{
+  font-size: 12px;
+  font-weight: bold;
+  text-align: left;
+  list-style: none;
+  max-width: 500px;
+  margin: -10px auto 10px;
+  color: rgb(238, 210, 30);
+  text-transform: lowercase;
+  overflow: hidden;
+  max-height: 0;
+  transition: max-height 0.1s ease-out;
+}
+
+.text__requirements li.invalid {
+  color: #e74c3c;
+}
+.text__requirements li.valid {
+  color: #2ecc71;
+}
+
+.text__hashtags:focus + .text__requirements,
+.text__hashtags:active + .text__requirements{
+  max-height: 1000px;
+  transition: max-height 0.5s ease-in;
+}
+
 .text__description {
   width: 450px;
   height: 100px;
