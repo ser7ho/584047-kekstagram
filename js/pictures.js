@@ -150,7 +150,6 @@ var closeImgUpload = function () {
   document.removeEventListener('keydown', onImgUploadEscPress);
   effectsList.removeEventListener('click', onEffectsClick);
   imgUploadPreview.classList.remove(imgUploadPreview.classList[1]);
-  pin.removeEventListener('mouseup', onPinMouseup);
   minusResize.removeEventListener('click', onMinusResizeClick);
   plusResize.removeEventListener('click', onPlusResizeClick);
   inputComment.value = '';
@@ -158,6 +157,7 @@ var closeImgUpload = function () {
     el.classList = 'valid';
   });
   inputHashtags.setCustomValidity('');
+  document.querySelector('.img-upload__scale').classList.add('hidden');
 };
 
 imgUpload.addEventListener('change', function () {
@@ -173,21 +173,54 @@ cancelUpload.addEventListener('click', function () {
 // --- effects -------------------------------------------------------------------------------------------------------
 
 var onEffectsClick = function (evt) {
-  pin.addEventListener('mouseup', onPinMouseup);
+  var scale = document.querySelector('.img-upload__scale');
   if (evt.target.classList.contains('effects__preview')) {
     imgUploadPreview.classList.remove(imgUploadPreview.classList[1]);
     imgUploadPreview.classList.add(evt.target.classList[1]);
     imgUploadPreview.style.filter = '';
+    pin.style.left = '';
+    document.querySelector('.scale__level').style.width = '';
+    scale.classList.remove('hidden');
+  } if (evt.target.classList.contains('effects__preview--none')) {
+    scale.classList.add('hidden');
   }
 };
 // ---------------------------------------------------------------------------------------------------------------------
 
+(function () {
+  pin.addEventListener('mousedown', function (downEvt) {
+    downEvt.preventDefault();
+    var sliderElem = document.querySelector('.scale__line');
+    var sliderLevel = document.querySelector('.scale__level');
+    var bar = sliderElem.clientWidth;
+
+    var shiftX = downEvt.clientX - pin.offsetLeft;
+
+    var onPinMousemove = function (moveEvt) {
+      moveEvt.preventDefault();
+      var pinLeft = (moveEvt.clientX - shiftX) / bar * 100;
+      if (pinLeft < 0) {
+        pinLeft = 0;
+      } else if (pinLeft > 100) {
+        pinLeft = 100;
+      }
+      pin.style.left = pinLeft + '%';
+      sliderLevel.style.width = pinLeft + '%';
+      setEffectLevel(pinLeft);
+    };
+
+    var onPinMouseup = function () {
+      document.removeEventListener('mousemove', onPinMousemove);
+      document.removeEventListener('mouseup', onPinMouseup);
+    };
+
+    document.addEventListener('mousemove', onPinMousemove);
+    document.addEventListener('mouseup', onPinMouseup);
+  });
+})();
+
 // --- slider ----------------------------------------------------------------------------------------------------------
 
-var onPinMouseup = function (evt) {
-  var BAR = 453;
-  setEffectLevel(evt.target.offsetLeft / BAR * 100);
-};
 
 var setEffectLevel = function (pinLevel) {
   var EFFECTS =
