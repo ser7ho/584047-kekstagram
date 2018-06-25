@@ -1,6 +1,10 @@
 'use strict';
 
 (function () {
+  var STEP = 25;
+  var SIZE_MAX = 100;
+  var SIZE_MIN = 25;
+  var ESC_KEYCODE = 27;
   var pictureItems = document.querySelector('.pictures');
   var imgUpload = pictureItems.querySelector('#upload-file');
   var imgUploadOverlay = pictureItems.querySelector('.img-upload__overlay');
@@ -17,7 +21,6 @@
   var valueResize = imgResize.querySelector('.resize__control--value');
 
   var onImgUploadEscPress = function (evt) {
-    var ESC_KEYCODE = 27;
     if (evt.keyCode === ESC_KEYCODE && !evt.target.classList.contains('text__hashtags') && !evt.target.classList.contains('text__description')) {
       closeImgUpload();
     }
@@ -26,7 +29,7 @@
   var openImgUpload = function () {
     pin.style.left = '100%';
     valueResize.value = '100%';
-    window.resize.resizeScale();
+    resize.resizeScale();
     imgUploadOverlay.classList.remove('hidden');
     document.addEventListener('keydown', onImgUploadEscPress);
     effectsList.addEventListener('click', onEffectsClick);
@@ -39,6 +42,7 @@
     document.removeEventListener('keydown', onImgUploadEscPress);
     effectsList.removeEventListener('click', onEffectsClick);
     imgUploadPreview.classList.remove(imgUploadPreview.classList[1]);
+    imgUploadPreview.style.filter = '';
     minusResize.removeEventListener('click', onMinusResizeClick);
     plusResize.removeEventListener('click', onPlusResizeClick);
     inputComment.value = '';
@@ -58,13 +62,13 @@
   });
 
   var onMinusResizeClick = function () {
-    window.resize.setValueResize(false);
-    window.resize.resizeScale();
+    resize.setValueResize(false);
+    resize.resizeScale();
   };
 
   var onPlusResizeClick = function () {
-    window.resize.setValueResize(true);
-    window.resize.resizeScale();
+    resize.setValueResize(true);
+    resize.resizeScale();
   };
 
   var onEffectsClick = function (evt) {
@@ -78,6 +82,21 @@
       scale.classList.remove('hidden');
     } if (evt.target.classList.contains('effects__preview--none')) {
       scale.classList.add('hidden');
+    }
+  };
+
+  var resize = {
+    resizeScale: function () {
+      imgUploadPreview.style.transform = 'scale(' + parseInt(valueResize.value, 10) / 100 + ')';
+    },
+    setValueResize: function (isPlus) {
+      if (isPlus) {
+        if (parseInt(valueResize.value, 10) < SIZE_MAX) {
+          valueResize.value = parseInt(valueResize.value, 10) + STEP + '%';
+        }
+      } else if (parseInt(valueResize.value, 10) > SIZE_MIN) {
+        valueResize.value = parseInt(valueResize.value, 10) - STEP + '%';
+      }
     }
   };
 })();

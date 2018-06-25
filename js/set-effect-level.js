@@ -1,7 +1,7 @@
 'use strict';
 
 (function () {
-  window.setEffectLevel = function (pinLevel) {
+  window.getLevelSlider(function (pinLevel) {
     var imgUploadPreview = document.querySelector('.img-upload__preview');
     var EFFECTS =
       {
@@ -18,7 +18,7 @@
         break;
       }
     }
-  };
+  });
 
   var setFilter = function (filterName, level) {
     var effectFilter = document.querySelector('.img-upload__preview');
