@@ -1,18 +1,18 @@
 'use strict';
 
 (function () {
-  window.getLevelSlider(function (pinLevel) {
-    var imgUploadPreview = document.querySelector('.img-upload__preview');
+  window.slider(function (pinLevel) {
+    var effect = document.querySelector('input[name="effect"]:checked');
     var EFFECTS =
       {
-        'effects__preview--chrome': 1,
-        'effects__preview--sepia': 1,
-        'effects__preview--marvin': 100,
-        'effects__preview--phobos': 5,
-        'effects__preview--heat': 2
+        'chrome': 1,
+        'sepia': 1,
+        'marvin': 100,
+        'phobos': 5,
+        'heat': 2
       };
     for (var key in EFFECTS) {
-      if (key === imgUploadPreview.classList[1]) {
+      if (key === effect.value) {
         var level = scaleLevel(EFFECTS[key], pinLevel);
         setFilter(key, level);
         break;
@@ -22,16 +22,22 @@
 
   var setFilter = function (filterName, level) {
     var effectFilter = document.querySelector('.img-upload__preview');
-    if (filterName === ('effects__preview--chrome')) {
-      effectFilter.style.filter = 'grayscale(' + level + ')';
-    } else if (filterName === ('effects__preview--sepia')) {
-      effectFilter.style.filter = 'sepia(' + level + ')';
-    } else if (filterName === ('effects__preview--marvin')) {
-      effectFilter.style.filter = 'invert(' + level + '%)';
-    } else if (filterName === ('effects__preview--phobos')) {
-      effectFilter.style.filter = 'blur(' + level + 'px)';
-    } else if (filterName === ('effects__preview--heat')) {
-      effectFilter.style.filter = 'brightness(' + (level + 1) + ')';
+    switch (filterName) {
+      case 'chrome':
+        effectFilter.style.filter = 'grayscale(' + level + ')';
+        break;
+      case 'sepia':
+        effectFilter.style.filter = 'sepia(' + level + ')';
+        break;
+      case 'marvin':
+        effectFilter.style.filter = 'invert(' + level + '%)';
+        break;
+      case 'phobos':
+        effectFilter.style.filter = 'blur(' + level + 'px)';
+        break;
+      case 'heat':
+        effectFilter.style.filter = 'brightness(' + (level + 1) + ')';
+        break;
     }
   };
 

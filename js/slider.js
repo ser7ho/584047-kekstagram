@@ -1,7 +1,7 @@
 'use strict';
 
 (function () {
-  window.getLevelSlider = function (callback) {
+  window.slider = function (callback) {
     var pin = document.querySelector('.scale__pin');
     pin.addEventListener('mousedown', function (downEvt) {
       downEvt.preventDefault();
