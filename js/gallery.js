@@ -3,10 +3,17 @@
 (function () {
   var ESC_KEYCODE = 27;
   var AVATAR_INDEX_RANGE = [1, 6];
-  var items = window.utils.generatePictures();
+  var items;
   var fragmentPictures = document.createDocumentFragment();
   var similarPictures = document.querySelector('.pictures');
   var template = document.querySelector('#picture');
+  window.backend.load(function (pictures) {
+    items = pictures;
+    items.forEach(function (el, i) {
+      fragmentPictures.appendChild(makePicture(el, i));
+    });
+    similarPictures.appendChild(fragmentPictures);
+  }, window.utils.error);
   var makePicture = function (item, i) {
     var similarPictureTemplate = template.content.querySelector('.picture__link');
     var pictureClone = similarPictureTemplate.cloneNode(true);
@@ -18,11 +25,6 @@
     pictureClone.querySelector('.picture__stat--comments').textContent = item.comments.length + '';
     return pictureClone;
   };
-
-  items.forEach(function (el, i) {
-    fragmentPictures.appendChild(makePicture(el, i));
-  });
-  similarPictures.appendChild(fragmentPictures);
 
   similarPictures.addEventListener('click', function (evt) {
     var evtTarget = evt.target;
