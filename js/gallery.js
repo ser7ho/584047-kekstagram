@@ -59,8 +59,9 @@
 
     var updateComments = function () {
       var fragmentComments = document.createDocumentFragment();
+      var countElements = similarComment.querySelectorAll('li').length;
       buttonLoadComments.classList.remove('hidden');
-      for (var i = similarComment.querySelectorAll('li').length; i < similarComment.querySelectorAll('li').length + STEP_COMMENTS; i++) {
+      for (var i = countElements; i < countElements + STEP_COMMENTS; i++) {
         if (i < item.comments.length) {
           fragmentComments.appendChild(makeComment(item.comments[i], AVATAR_INDEX_RANGE));
           countComments.textContent = i + 1;
