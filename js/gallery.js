@@ -175,4 +175,5 @@
   var filterDiscussed = filterImg.querySelector('#filter-discussed');
 
   filterImg.addEventListener('click', onFilterClick);
+
 })();

@@ -106,7 +106,7 @@
 
   form.addEventListener('submit', function (evt) {
     window.backend.save(new FormData(form), function () {
-      imgUploadOverlay.classList.add('hidden');
+      window.form.closeImgUpload();
     }, window.utils.error);
     evt.preventDefault();
     window.utils.removeError();
