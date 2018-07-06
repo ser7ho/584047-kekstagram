@@ -51,7 +51,7 @@
   similarPictures.addEventListener('keydown', function (evt) {
     var target = evt.target;
     var index = target.dataset.index;
-    if (evt.keyCode === ENTER_KEYCODE && target.classList.contains('picture__link')) {
+    if (evt.keyCode === ENTER_KEYCODE) {
       showBigPicture(items[index]);
     }
   });
