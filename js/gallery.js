@@ -2,6 +2,7 @@
 
 (function () {
   var ESC_KEYCODE = 27;
+  var ENTER_KEYCODE = 13;
   var AVATAR_INDEX_RANGE = [1, 6];
   var NEW_PICTURES_COUNT = 10;
   var STEP_COMMENTS = 5;
@@ -29,16 +30,29 @@
     var pictureImg = pictureClone.querySelector('.picture__img');
 
     pictureImg.src = item.url;
-    pictureImg.dataset.index = i;
+    pictureClone.dataset.index = i;
     pictureClone.querySelector('.picture__stat--likes').textContent = item.likes;
     pictureClone.querySelector('.picture__stat--comments').textContent = item.comments.length + '';
     return pictureClone;
   };
 
   similarPictures.addEventListener('click', function (evt) {
-    var evtTarget = evt.target;
-    if (evtTarget.classList.contains('picture__img')) {
-      showBigPicture(items[evtTarget.dataset.index]);
+    var target = evt.target;
+    while (target !== evt.currentTarget) {
+      if (target.classList.contains('picture__link')) {
+        var index = target.dataset.index;
+        showBigPicture(items[index]);
+        return;
+      }
+      target = target.parentNode;
+    }
+  });
+
+  similarPictures.addEventListener('keydown', function (evt) {
+    var target = evt.target;
+    var index = target.dataset.index;
+    if (evt.keyCode === ENTER_KEYCODE && target.classList.contains('picture__link')) {
+      showBigPicture(items[index]);
     }
   });
 
